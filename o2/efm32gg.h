@@ -70,6 +70,15 @@
 #define TIMER1_TOP ((volatile uint32_t*)(TIMER1_BASE + 0x1c))
 #define TIMER1_CNT ((volatile uint32_t*)(TIMER1_BASE + 0x24))
 
+/* 
+  TODO calculate the appropriate sample period for the sound wave(s) 
+  you want to generate. The core clock (which the timer clock is derived
+  from) runs at 14 MHz by default. Also remember that the timer counter
+  registers are 16 bits.
+*/
+/* The period between sound samples, in clock cycles */
+#define   SAMPLE_PERIOD   1091
+
 // NVIC
 
 #define ISER0 ((volatile uint32_t*)0xe000e100)
