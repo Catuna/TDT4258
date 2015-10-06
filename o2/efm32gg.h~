@@ -42,6 +42,7 @@
 #define GPIO_EXTIFALL  ((volatile uint32_t*)(GPIO_PA_BASE + 0x10c))
 #define GPIO_IEN       ((volatile uint32_t*)(GPIO_PA_BASE + 0x110))
 #define GPIO_IFC       ((volatile uint32_t*)(GPIO_PA_BASE + 0x11c))
+#define GPIO_IF        ((volatile uint32_t*)(GPIO_PA_BASE + 0x114))
 
 // CMU
 
@@ -62,12 +63,20 @@
 // TIMER1
 
 #define TIMER1_BASE 0x40010400
-
 #define TIMER1_CMD ((volatile uint32_t*)(TIMER1_BASE + 0x04))
 #define TIMER1_IEN ((volatile uint32_t*)(TIMER1_BASE + 0x0c))
 #define TIMER1_IFC ((volatile uint32_t*)(TIMER1_BASE + 0x18))
 #define TIMER1_TOP ((volatile uint32_t*)(TIMER1_BASE + 0x1c))
 #define TIMER1_CNT ((volatile uint32_t*)(TIMER1_BASE + 0x24))
+
+/* 
+  TODO calculate the appropriate sample period for the sound wave(s) 
+  you want to generate. The core clock (which the timer clock is derived
+  from) runs at 14 MHz by default. Also remember that the timer counter
+  registers are 16 bits.
+*/
+/* The period between sound samples, in clock cycles */
+#define   SAMPLE_PERIOD   109400
 
 // NVIC
 

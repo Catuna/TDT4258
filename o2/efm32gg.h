@@ -63,7 +63,6 @@
 // TIMER1
 
 #define TIMER1_BASE 0x40010400
-
 #define TIMER1_CMD ((volatile uint32_t*)(TIMER1_BASE + 0x04))
 #define TIMER1_IEN ((volatile uint32_t*)(TIMER1_BASE + 0x0c))
 #define TIMER1_IFC ((volatile uint32_t*)(TIMER1_BASE + 0x18))
@@ -77,7 +76,7 @@
   registers are 16 bits.
 */
 /* The period between sound samples, in clock cycles */
-#define   SAMPLE_PERIOD   1091
+#define   SAMPLE_PERIOD   109400
 
 // NVIC
 
