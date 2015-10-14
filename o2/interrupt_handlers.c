@@ -34,11 +34,15 @@ void stopSound()
 	*TIMER1_CMD &= (~1);
 	*DAC0_CH0CTRL &= (~1);	//disable channel 0
   	*DAC0_CH1CTRL &= (~1);	//disable channel 1
+	*CMU_HFPERCLKEN0 &= ~((1<<15));
+	*CMU_HFCORECLKEN0 &= (~1);
 }
 
 void enableSound()
 {
 	stopSound();
+	*CMU_HFPERCLKEN0 |= (1<<15);
+	*CMU_HFCORECLKEN0 |= 1;
 	*TIMER1_CMD = 1;
 	*DAC0_CH0CTRL |= 1;	//enable channel 0
   	*DAC0_CH1CTRL |= 1;	//enable channel 1
@@ -105,11 +109,6 @@ void __attribute__ ((interrupt)) GPIO_EVEN_IRQHandler()
 		*GPIO_PA_DOUT=0xFB00;
 		*TIMER1_TOP = (int)(48000000L/(3.5f*(44100L)/4L));
 	}
-
-  /*int * a;
-  int b;
-  a = &b;
-  b=*a;*/
 }
 
 /* GPIO odd pin interrupt handler */
