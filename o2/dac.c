@@ -7,8 +7,17 @@ void setupDAC()
 {
   *CMU_HFPERCLKEN0 |= (1<<17);
   *DAC0_CTRL = 0x00010;
-  *DAC0_CH0CTRL = 1;
-  *DAC0_CH1CTRL = 1;
+  *DAC0_CH0CTRL = 1;	//enable channel 0
+  *DAC0_CH1CTRL = 1;	//enable channel 1
+
+	//setup prs and make timer trigger conversion start
+	*CMU_HFPERCLKEN0|=(1<<15)|(1<<6);		//set clock to enable PRS and DMA
+	*CMU_HFCORECLKEN0|=1;				//Set CMU to ...
+	*PRS_CH0_CTRL|=(0b011101<<16)|(0b001);		//Enable TIMER1 as input and set TIMER1 overflow as input signal
+	*DAC0_CH0CTRL|=(0<<4);				//Select prschannel 0
+	*DAC0_CH0CTRL|=(1<<2);				//Enable dacch0 to trigger on PRS 
+	*DAC0_IEN |= 1;				//enable interrupt
+	*ISER0|=(1<<8/*DAC*/);
   
   /*
     TODO enable and set up the Digital-Analog Converter
