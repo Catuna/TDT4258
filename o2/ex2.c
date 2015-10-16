@@ -3,33 +3,29 @@
 
 #include "efm32gg.h"
 
-/* Declaration of peripheral setup functions */
-void setupTimer(uint32_t period);
-void setupDAC();
-void setupNVIC();
-void wfi();
 
-/* Your code will start executing here */
+void setupTimer();
+void setupDAC();
+void wfi();
+void setupGPIO();
+void setSampleFrequency(int frequency);
+
 int main(void) 
 {  
-  /* Call the peripheral setup functions */
-  setupGPIO();
-  setupDAC();
-  setupTimer(SAMPLE_PERIOD);
+  setupGPIO();                //Setup general purpose input/output
+  setupDAC();                 //Setup digital to analog converter
+  setupTimer();               //Setup timer
   
-  /* Enable interrupt handling */
-  setupNVIC();
-  
-  /* TODO for higher energy efficiency, sleep while waiting for interrupts
-     instead of infinite loop for busy-waiting
-  */
+  /*page 140 manual. Used to prescale the clock. 
+   *Only used for testing purposes*/
+  //*CMU_HFPERCLKDIV = (1<<8) | (4 << 0);
+
   //Setup ability to deep sleep
-  *EMU_CTRL = 6;
+  *SETUP_SCR |= 6;
 
   while(1)
   {
-	wfi();	
-	
+	   wfi();	 //call wait for inerrupt
   }
 
   return 0;
@@ -37,74 +33,8 @@ int main(void)
 
 void wfi()
 {
+  //Compiler will insert the instructions in the appropriate position
 	__asm__(
-	"wfi"
+	"wfi;"
 	);
 }
-
-void setupNVIC()
-{
-  /* TODO use the NVIC ISERx registers to enable handling of interrupt(s)
-     remember two things are necessary for interrupt handling:
-      - the peripheral must generate an interrupt signal
-      - the NVIC must be configured to make the CPU handle the signal
-     You will need TIMER1, GPIO odd and GPIO even interrupt handling for this
-     assignment.
-  */
-}
-
-/* if other interrupt handlers are needed, use the following names: 
-   NMI_Handler
-   HardFault_Handler
-   MemManage_Handler
-   BusFault_Handler
-   UsageFault_Handler
-   Reserved7_Handler
-   Reserved8_Handler
-   Reserved9_Handler
-   Reserved10_Handler
-   SVC_Handler
-   DebugMon_Handler
-   Reserved13_Handler
-   PendSV_Handler
-   SysTick_Handler
-   DMA_IRQHandler
-   GPIO_EVEN_IRQHandler
-   TIMER0_IRQHandler
-   USART0_RX_IRQHandler
-   USART0_TX_IRQHandler
-   USB_IRQHandler
-   ACMP0_IRQHandler
-   ADC0_IRQHandler
-   DAC0_IRQHandler
-   I2C0_IRQHandler
-   I2C1_IRQHandler
-   GPIO_ODD_IRQHandler
-   TIMER1_IRQHandler
-   TIMER2_IRQHandler
-   TIMER3_IRQHandler
-   USART1_RX_IRQHandler
-   USART1_TX_IRQHandler
-   LESENSE_IRQHandler
-   USART2_RX_IRQHandler
-   USART2_TX_IRQHandler
-   UART0_RX_IRQHandler
-   UART0_TX_IRQHandler
-   UART1_RX_IRQHandler
-   UART1_TX_IRQHandler
-   LEUART0_IRQHandler
-   LEUART1_IRQHandler
-   LETIMER0_IRQHandler
-   PCNT0_IRQHandler
-   PCNT1_IRQHandler
-   PCNT2_IRQHandler
-   RTC_IRQHandler
-   BURTC_IRQHandler
-   CMU_IRQHandler
-   VCMP_IRQHandler
-   LCD_IRQHandler
-   MSC_IRQHandler
-   AES_IRQHandler
-   EBI_IRQHandler
-   EMU_IRQHandler
-*/

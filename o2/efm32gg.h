@@ -1,5 +1,10 @@
 #include <stdint.h>
 
+//General
+
+#define SETUP_SCR ((volatile uint32_t*)0xe000ed10)
+#define F_CPU 48000000L		//Clock frequency of CPU
+
 // GPIO
 
 #define GPIO_PA_BASE 0x40006000
@@ -69,15 +74,6 @@
 #define TIMER1_TOP ((volatile uint32_t*)(TIMER1_BASE + 0x1c))
 #define TIMER1_CNT ((volatile uint32_t*)(TIMER1_BASE + 0x24))
 
-/* 
-  TODO calculate the appropriate sample period for the sound wave(s) 
-  you want to generate. The core clock (which the timer clock is derived
-  from) runs at 14 MHz by default. Also remember that the timer counter
-  registers are 16 bits.
-*/
-/* The period between sound samples, in clock cycles */
-#define   SAMPLE_PERIOD   109400
-
 // NVIC
 
 #define ISER0 ((volatile uint32_t*)0xe000e100)
@@ -101,7 +97,6 @@
 #define IPR3 ((volatile uint32_t*)(IPR_BASE + 0x0c))
 
 // EMU
-
 #define EMU_BASE2 0x400c6000
 
 #define EMU_CTRL ((volatile uint32_t*)(EMU_BASE2 + 0x000))
